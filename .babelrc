@@ -1,7 +1,7 @@
 {
   "presets": [
     [
-      "env",
+      "@babel/preset-env",
       {
         "targets": {
           "browsers": ["last 2 versions", "safari >= 7"],
@@ -15,9 +15,9 @@
     "transform-object-rest-spread",
     "transform-vue-jsx",
     [
-      "transform-runtime",
+      "@babel/plugin-transform-runtime",
       {
-        "polyfill": true,
+        "corejs": 3,
         "regenerator": true
       }
     ]

@@ -1,23 +1,27 @@
 <template>
   <div :id="componentAttrIdAutosuggest">
-    <slot name="before-input" /><div
+    <slot name="before-input" />
+    <div
       role="combobox"
       :aria-expanded="isOpen ? 'true' : 'false'"
       aria-haspopup="listbox"
       :aria-owns="`${componentAttrIdAutosuggest}-${componentAttrPrefix}__results`"
-    ><input
-      :type="internal_inputProps.type"
-      :value="internalValue"
-      :autocomplete="internal_inputProps.autocomplete"
-      :class="[isOpen ? `${componentAttrPrefix}__input--open` : '', internal_inputProps['class']]"
-      v-bind="internal_inputProps"
-      aria-autocomplete="list"
-      :aria-activedescendant="isOpen && currentIndex !== null ? `${componentAttrPrefix}__results-item--${currentIndex}` : ''"
-      :aria-controls="`${componentAttrIdAutosuggest}-${componentAttrPrefix}__results`"
-      @input="inputHandler"
-      @keydown="handleKeyStroke"
-      v-on="listeners"
-    ></div><slot name="after-input" />
+    >
+      <input
+        :type="internal_inputProps.type"
+        :value="internalValue"
+        :autocomplete="internal_inputProps.autocomplete"
+        :class="[isOpen ? `${componentAttrPrefix}__input--open` : '', internal_inputProps['class']]"
+        v-bind="internal_inputProps"
+        aria-autocomplete="list"
+        :aria-activedescendant="isOpen && currentIndex !== null ? `${componentAttrPrefix}__results-item--${currentIndex}` : ''"
+        :aria-controls="`${componentAttrIdAutosuggest}-${componentAttrPrefix}__results`"
+        @input="inputHandler"
+        @keydown="handleKeyStroke"
+        v-on="listeners"
+      >
+    </div>
+    <slot name="after-input" />
     <div
       :id="`${componentAttrIdAutosuggest}-${componentAttrPrefix}__results`"
       :class="_componentAttrClassAutosuggestResultsContainer"
@@ -41,9 +45,9 @@
           :component-attr-id-autosuggest="componentAttrIdAutosuggest"
           @updateCurrentIndex="updateCurrentIndex"
         >
-          <template
-            :slot="`before-section-${cs.name || cs.label}`"
-            slot-scope="{section, className}"
+          <template 
+            v-for="slot_name in [`before-section-${cs.name || cs.label}`]"
+            v-slot:[slot_name]="{section, className}"
           >
             <slot
               :name="`before-section-${cs.name || cs.label}`"
@@ -51,7 +55,8 @@
               :className="className"
             />
           </template>
-          <template slot-scope="{ suggestion, _key }">
+
+          <template #default="{suggestion, _key}">
             <slot
               :suggestion="suggestion"
               :index="_key"
@@ -59,18 +64,19 @@
               {{ suggestion.item }}
             </slot>
           </template>
+
           <template
-            :slot="`after-section-${cs.name || cs.label}`"
-            slot-scope="{section}"
+            v-for="slot_name in [`after-section-${cs.name || cs.label}`]"
+            v-slot:[slot_name]="{section}"
           >
             <slot
               :name="`after-section-${cs.name || cs.label}`"
               :section="section"
             />
           </template>
+
           <template
-            slot="after-section"
-            slot-scope="{section}"
+            v-slot:after-section="{section}"
           >
             <slot
               name="after-section"
@@ -180,11 +186,11 @@ export default {
         };
       }
     },
-    onSelected: {
-      type: Function,
-      required: false,
-      default: null
-    },
+    // onSelected: {
+    //   type: Function,
+    //   required: false,
+    //   default: null
+    // },
     componentAttrIdAutosuggest: {
       type: String,
       required: false,
@@ -231,12 +237,13 @@ export default {
     internal_inputProps() {
       return {
         ...this.defaultInputProps,
-        ...this.inputProps
+        ...this.inputProps,
+        ...this.listeners
       }
     },
     listeners() {
       return {
-        ...this.$listeners,
+        ...this.$attrs,
         input: e => {
           // Don't do anything native here, since we have inputHandler
           return
@@ -247,7 +254,7 @@ export default {
         click: () => {
           /* eslint-disable-next-line vue/no-side-effects-in-computed-properties */
           this.loading = false;
-          this.$listeners.click && this.$listeners.click(this.currentItem);
+          this.$attrs.click && this.$attrs.click(this.currentItem);
           this.$nextTick(() => {
             this.ensureItemVisible(this.currentItem, this.currentIndex);
           })
@@ -268,7 +275,7 @@ export default {
             );
           } else if (this.sectionConfigs["default"].onSelected) {
             this.sectionConfigs["default"].onSelected(null, this.searchInputOriginal);
-          } else if (this.$listeners.selected) {
+          } else if (this.$attrs.onSelected) {
             this.$emit('selected', this.currentItem, this.currentIndex);
           }
           this.setChangeItem(null)
@@ -288,6 +295,7 @@ export default {
      */
     computedSections() {
       let tmpSize = 0
+      
       return this.suggestions.map(section => {
         if (!section.data) return;
 
@@ -390,7 +398,7 @@ export default {
      */
     inputHandler(e) {
       const newValue = e.target.value
-      this.$emit('input', newValue)
+      this.$emit('update:modelValue', newValue)
       this.internalValue = newValue
       if (!this.didSelectFromOptions) {
         this.searchInputOriginal = newValue;
@@ -419,6 +427,7 @@ export default {
           let trueIndex = index - this.computedSections[i].start_index;
           const sectionName = this.computedSections[i].name
           let childSection = this.$refs[this.getSectionRef(`${sectionName}${i}`)][0];
+
           if (childSection) {
             obj = this.normalizeItem(
               this.computedSections[i].name,
@@ -506,7 +515,7 @@ export default {
             this.loading = true;
             this.currentIndex = null;
             this.internalValue = this.searchInputOriginal;
-            this.$emit('input', this.searchInputOriginal);
+            this.$emit('update:modelValue', this.searchInputOriginal);
             e.preventDefault();
             break;
         }
