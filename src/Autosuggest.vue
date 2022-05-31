@@ -248,8 +248,8 @@ const clientXMouseDownInitial = ref(null);
 const internal_inputProps = computed(() => {
   return {
     ...defaultInputProps,
-    ...inputProps,
-    ...listeners
+    ...inputProps.value,
+    ...listeners.value
   }
 });
 
