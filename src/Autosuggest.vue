@@ -110,7 +110,10 @@ import { addClass, removeClass } from "./utils";
 
 const $refs = ref([]);
 const refSet = (el, key) => {
-  $refs.value.push({key, el})
+  const index = $refs.value.findIndex(item => item.key === key);
+  if (index === -1) {
+    $refs.value.push({key, el})
+  }
   return key;
 }
 
