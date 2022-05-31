@@ -1,14 +1,11 @@
 <template>
   <div id="app">
-    Test2
-    {{ searchText }}
     <vue-autosuggest
       ref="autocomplete"
       v-model="searchText"
       component-attr-id-autosuggest="demo-autosuggest"
       :suggestions="filteredOptions"
       :input-props="inputProps"
-      :section-configs="{default: {limit: 4}}"
       :get-suggestion-value="getSuggestionValue"
       :limit="10"
       @input="onInputChange"
@@ -51,6 +48,7 @@
     if (!item) {
       return;
     }
+  
     selected.value = item.item;
   };
 
