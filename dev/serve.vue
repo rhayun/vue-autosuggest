@@ -8,7 +8,7 @@
       :input-props="inputProps"
       :get-suggestion-value="getSuggestionValue"
       :limit="10"
-      @input="onInputChange"
+      @input="(...args) => logEvent('input', args)"
       @highlighted="(...args) => logEvent('highlighted', args)"
       @selected="onSelected"
     />
@@ -16,10 +16,9 @@
 </template>
 
 <script setup>
-  import { ref } from 'vue';
+  import { ref, computed } from 'vue';
   import VueAutosuggest from '../src/Autosuggest.vue';
 
-  const filteredOptions = ref([]);
   const dataSuggest = ref(['Frodo', 'Samwise', 'Gandalf', 'Galadriel', 'Faramir', 'Éowyn']);
   const autocomplete = ref(null);
   const selected = ref('');
@@ -52,23 +51,22 @@
     selected.value = item.item;
   };
 
-  const onInputChange = (e) => {
+  const filteredOptions = computed(() => {
     if (searchText.value === '' || searchText.value === undefined) {
-      filteredOptions.value = [{
-        data: dataSuggest.value
-      }]
-      return
+      return [];
     }
 
     const filteredData = dataSuggest.value.filter(
       item => item.toLowerCase().includes(searchText.value.toLowerCase())
     ).slice(0, limit)
 
-    filteredOptions.value = [{
+    const filtered = [{
       data: filteredData
     }]
 
-  }
+    return Object.freeze(filtered)
+  })
+
 </script>
 
 <style>
