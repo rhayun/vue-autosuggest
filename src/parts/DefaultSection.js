@@ -1,7 +1,7 @@
 import { h, defineComponent, Fragment, toRefs, computed } from "vue";
 
 const DefaultSection = defineComponent({
-  name: "default-section",
+  name: "DefaultSection",
   props: {
     section: {
       type: Object,
@@ -30,11 +30,6 @@ const DefaultSection = defineComponent({
     },
   },
   emits: ["updateCurrentIndex"],
-  methods: {
-    getItemByIndex: function (i) {
-      return this.section.data[i];
-    },
-  },
   setup(props, { slots: $slots, emit }) {
     const {
       section,
@@ -161,6 +156,11 @@ const DefaultSection = defineComponent({
             }),
         ]
       );
+  },
+  methods: {
+    getItemByIndex: function (i) {
+      return this.section.data[i];
+    },
   },
 });
 

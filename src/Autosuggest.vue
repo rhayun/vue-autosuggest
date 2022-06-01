@@ -47,12 +47,12 @@
         >
           <template 
             v-for="slot_name in [`before-section-${cs.name || cs.label}`]"
-            v-slot:[slot_name]="{section, className}"
+            #[slot_name]="{section, className}"
           >
             <slot
               :name="`before-section-${cs.name || cs.label}`"
               :section="section"
-              :className="className"
+              :class-name="className"
             />
           </template>
 
@@ -67,7 +67,7 @@
 
           <template
             v-for="slot_name in [`after-section-${cs.name || cs.label}`]"
-            v-slot:[slot_name]="{section}"
+            #[slot_name]="{section}"
           >
             <slot
               :name="`after-section-${cs.name || cs.label}`"
@@ -76,7 +76,7 @@
           </template>
 
           <template
-            v-slot:after-section="{section}"
+            #after-section="{section}"
           >
             <slot
               name="after-section"

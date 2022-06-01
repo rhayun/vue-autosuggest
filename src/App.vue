@@ -3,7 +3,7 @@
     <main class="demo">
       <h1>🔍 Vue-autosuggest</h1>
       <div>
-        <vue-autosuggest
+        <vue-auto-suggest
           ref="autocomplete"
           v-model="searchText"
           component-attr-id-autosuggest="demo-autosuggest"
@@ -17,24 +17,27 @@
           @highlighted="(...args) => logEvent('highlighted', args)"
           @selected="onSelected"
         >
-          <template v-slot:before-input>
+          <template #before-input>
             <label :for="inputProps.id">Select a LOTR Character</label>
           </template>
-          <template v-slot:default="{suggestion, index, cs}">
+          <template #default="{suggestion}">
             <div>{{ suggestion && suggestion.item.Name }}</div>
           </template>
-          <template v-slot:after-suggestions>
+          <template #after-suggestions>
             <p 
               v-if="filteredOptions == 0" 
               style="text-align: center;"
-            >No Results... Try <a 
-              style="color: peachpuff;" 
-              :href="`https://www.google.com/search?safe=active&source=hp&ei=t_M-Xci6EYq6tgXrzbLoCw&q=${searchText}`" 
-              target="_blank" 
-              @mouseup.stop
-            >googling</a></p>
+            >
+              No Results... Try
+              <a 
+                style="color: peachpuff;" 
+                :href="`https://www.google.com/search?safe=active&source=hp&ei=t_M-Xci6EYq6tgXrzbLoCw&q=${searchText}`" 
+                target="_blank" 
+                @mouseup.stop
+              >googling</a>
+            </p>
           </template>
-        </vue-autosuggest>
+        </vue-auto-suggest>
       </div>
     </main>
   </div>
@@ -42,7 +45,7 @@
 
 <script setup>
   import { ref, computed } from 'vue';
-  import VueAutosuggest from '../src/Autosuggest.vue';
+  import VueAutoSuggest from '../src/AutoSuggest.vue';
   import characters from './lotr-character'
 
   const races = [...new Set(characters.map(c => { return c.Race }))]
