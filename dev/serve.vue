@@ -1,40 +1,78 @@
 <template>
   <div id="app">
-    <vue-autosuggest
-      ref="autocomplete"
-      v-model="searchText"
-      component-attr-id-autosuggest="demo-autosuggest"
-      :suggestions="filteredOptions"
-      :input-props="inputProps"
-      :get-suggestion-value="getSuggestionValue"
-      :limit="10"
-      @input="(...args) => logEvent('input', args)"
-      @highlighted="(...args) => logEvent('highlighted', args)"
-      @selected="onSelected"
-    />
+    <main class="demo">
+      <h1>🔍 Vue-autosuggest</h1>
+      <div>
+        <vue-autosuggest
+          ref="autocomplete"
+          v-model="searchText"
+          component-attr-id-autosuggest="demo-autosuggest"
+          :suggestions="filteredOptions"
+          :input-props="inputProps"
+          :section-configs="sectionConfigs"
+          :get-suggestion-value="getSuggestionValue"
+          :limit="10"
+          :should-render-suggestions="(size, loading) => size >= 0 && !loading && searchText.value !== ''"
+          @input="(...args) => logEvent('input', args)"
+          @highlighted="(...args) => logEvent('highlighted', args)"
+          @selected="onSelected"
+        >
+          <template v-slot:before-input>
+            <label :for="inputProps.id">Select a LOTR Character</label>
+          </template>
+          <template v-slot:default="{suggestion, index, cs}">
+            <div>{{ suggestion && suggestion.item.Name }}</div>
+          </template>
+          <template v-slot:after-suggestions>
+            <p 
+              v-if="filteredOptions == 0" 
+              style="text-align: center;"
+            >No Results... Try <a 
+              style="color: peachpuff;" 
+              :href="`https://www.google.com/search?safe=active&source=hp&ei=t_M-Xci6EYq6tgXrzbLoCw&q=${searchText}`" 
+              target="_blank" 
+              @mouseup.stop
+            >googling</a></p>
+          </template>
+        </vue-autosuggest>
+      </div>
+    </main>
   </div>
 </template>
 
 <script setup>
   import { ref, computed } from 'vue';
   import VueAutosuggest from '../src/Autosuggest.vue';
+  import characters from './lotr-character'
 
-  const dataSuggest = ref(['Frodo', 'Samwise', 'Gandalf', 'Galadriel', 'Faramir', 'Éowyn']);
+  const races = [...new Set(characters.map(c => { return c.Race }))]
+  const options = races.map(r => ({
+    label: r,
+    name: r,
+    data: characters.filter(c => c.Race === r)
+  }));
   const autocomplete = ref(null);
   const selected = ref('');
   const searchText = ref('');
-
+  const sectionConfigs = {
+    default: {
+      limit: 4,
+      ulClass: {'data-darren': true },
+      liClass: {'elf-row': true }
+    },
+    Elf: {
+      limit: 6
+    }
+  };
   const inputProps = {
     id: 'autosuggest__input',
     placeholder: 'Search',
   };
 
-  const limit = 10;
-
   const events = [];
 
   const getSuggestionValue = (item) => {
-    return item.item;
+    return item.item.Name;
   };
 
   const logEvent = (name, value) => {
@@ -52,17 +90,27 @@
   };
 
   const filteredOptions = computed(() => {
+    const filtered = []
+
     if (searchText.value === '' || searchText.value === undefined) {
       return [];
     }
 
-    const filteredData = dataSuggest.value.filter(
-      item => item.toLowerCase().includes(searchText.value.toLowerCase())
-    ).slice(0, limit)
+    races.forEach(r => {
+      const people = options.filter(o => o.name === r)[0].data.filter(p => {
+        return p.Name.toLowerCase().indexOf(searchText.value.toLowerCase()) > -1;
+      }).map(p => {
+        p.liClass = p.Name === 'Gandalf' ? {'gandalf': true} : null
+        return p
+      });
 
-    const filtered = [{
-      data: filteredData
-    }]
+      people.length > 0 &&
+        filtered.push({
+          name: Object.keys(sectionConfigs).indexOf(r) > -1 ? r : 'default',
+          label: r,
+          data: people
+        });
+    })
 
     return Object.freeze(filtered)
   })
@@ -77,15 +125,20 @@
   --theme-item_bg_highlighted: #aaa;
   --theme-item_color_highlighted: #222;
 }
-  #app {
-    color: #2c3e50;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 100px;
-  }
+body {
+  max-width: 800px;
+  padding: 20px;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+#app {
+  position: relative;
+  color: #2c3e50;
+  height: 100vh;
+  align-items: center;
+  justify-content: center;
+  gap: 100px;
+}
 button {
   position: absolute;
   right: 1rem;
@@ -111,6 +164,7 @@ h1 {
 #demo-autosuggest label {
   margin-bottom: 1rem;
   display:block;
+  position: relative
 }
 #autosuggest__input {
   background-color: var(--theme-bg);
