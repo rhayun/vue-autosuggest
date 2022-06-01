@@ -8,6 +8,7 @@
   },
   "scripts": {
     "dev": "vite",
+    "prepare": "npm run build",
     "build": "vite build",
     "deploy": "yarn build && npm publish",
     "test": "vitest",
