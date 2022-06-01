@@ -93,9 +93,7 @@
 
 <script setup>
 import {
-  useAttrs, 
-  defineProps, 
-  defineEmits, 
+  useAttrs,
   computed, 
   ref, 
   nextTick, 

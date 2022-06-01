@@ -7,14 +7,11 @@
     "npm": "> 3"
   },
   "scripts": {
-    "dev": "vue-cli-service serve dev/serve.js",
+    "dev": "vite",
     "commit": "git-cz",
     "start": "webpack-dev-server --config docs/webpack.config.js",
     "lint": "eslint --ext .js,.vue src",
-    "build": "yarn build:docs && yarn build:esm && yarn build:umd && yarn storybook:build",
-    "build:docs": "NODE_ENV=production webpack --config docs/webpack.config.js",
-    "build:esm": "rollup -c ./build/rollup.esm.config.js",
-    "build:umd": "rollup -c ./build/rollup.umd.config.js",
+    "build": "vite build",
     "deploy": "yarn build && npm publish",
     "test": "yarn jest",
     "test-compat": "./__tests__/test-compat-all.sh",
@@ -70,53 +67,7 @@
     }
   },
   "peerDependencies": {
-    "vue": "^3.2.20"
-  },
-  "devDependencies": {
-    "@babel/core": "^7.12.10",
-    "@babel/plugin-proposal-object-rest-spread": "^7.18.0",
-    "@babel/plugin-transform-runtime": "^7.18.2",
-    "@babel/preset-env": "^7.12.11",
-    "@rollup/plugin-babel": "^5.2.2",
-    "@rollup/plugin-buble": "^0.21.3",
-    "@rollup/plugin-commonjs": "^21.0.2",
-    "@rollup/plugin-json": "^4.1.0",
-    "@rollup/plugin-node-resolve": "^13.1.3",
-    "@rollup/plugin-replace": "^3.1.0",
-    "@storybook/addon-actions": "^3.2.16",
-    "@storybook/vue": "3.2.15",
-    "@vue/cli-plugin-babel": "^4.5.10",
-    "@vue/cli-service": "^4.5.10",
-    "@vue/compiler-sfc": "^3.0.5",
-    "@vue/vue3-jest": "28",
-    "babel-eslint": "^8.0.2",
-    "babel-jest": "22.4.0",
-    "babel-plugin-syntax-jsx": "^6.18.0",
-    "babel-plugin-transform-object-rest-spread": "^6.26.0",
-    "babel-plugin-transform-runtime": "6.23.0",
-    "babel-plugin-transform-vue-jsx": "^3.7.0",
-    "codecov": "3.0.0",
-    "codecov.io": "0.1.6",
-    "commitizen": "2.9.6",
-    "cross-env": "^7.0.3",
-    "css-loader": "0.28.7",
-    "cz-conventional-changelog": "2.0.0",
-    "diffable-html": "3.0.0",
-    "eslint": "^5.6.0",
-    "eslint-friendly-formatter": "^3.0.0",
-    "eslint-loader": "^2.1.1",
-    "eslint-plugin-vue": "^5.0.0-beta.3",
-    "husky": "0.14.3",
-    "jest": "^28.1.0",
-    "jest-serializer-vue": "^2.0.2",
-    "kcd-scripts": "^12.2.0",
-    "prettier": "2.6.2",
-    "rollup": "^2.36.1",
-    "rollup-plugin-postcss": "^4.0.0",
-    "rollup-plugin-terser": "^7.0.2",
-    "rollup-plugin-vue": "^6.0.0",
-    "sinon": "4.1.2",
-    "vue": "^3.2.20"
+    "vue": "^3.2.33"
   },
   "jest": {
     "moduleFileExtensions": [
@@ -125,7 +76,7 @@
     ],
     "transform": {
       "^.+\\.js$": "<rootDir>/node_modules/babel-jest",
-      ".*\\.(vue)$": "<rootDir>/node_modules/vue-jest"
+      ".*\\.(vue)$": "<rootDir>/node_modules/vue3-jest"
     },
     "snapshotSerializers": [
       "jest-serializer-vue"
@@ -135,10 +86,15 @@
       "!**/node_modules/**",
       "!**/.test.js"
     ],
-    "testURL": "http://localhost"
+    "testEnvironmentOptions": {
+      "url": "http://localhost"
+    }
   },
   "dependencies": {
-    "@babel/runtime": "^7.18.3",
-    "@babel/traverse": "^7.18.2"
+    "vue": "^3.2.25"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^2.3.3",
+    "vite": "^2.9.9"
   }
 }
