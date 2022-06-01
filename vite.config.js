@@ -3,6 +3,11 @@ import vue from "@vitejs/plugin-vue";
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  test: {
+    include: ["src/**/__tests__/*"],
+    globals: true,
+    environment: "jsdom",
+  },
   build: {
     lib: {
       entry: "src/vue-autosuggest.js",

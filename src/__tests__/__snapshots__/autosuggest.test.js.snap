@@ -1,0 +1,129 @@
+// Vitest Snapshot v1
+
+exports[`Autosuggest > can mount 1`] = `
+"<div id=\\"autosuggest\\">
+  <div role=\\"combobox\\" aria-expanded=\\"false\\" aria-haspopup=\\"listbox\\" aria-owns=\\"autosuggest-autosuggest__results\\"><input type=\\"text\\" autocomplete=\\"off\\" class=\\"\\" id=\\"autosuggest__input\\" placeholder=\\"Type 'G'\\" input=\\"e => {
+      // Don't do anything native here, since we have inputHandler
+      return
+    }\\" selected=\\"() => {
+      /**
+       * Determine which onSelected to fire. This can be either from inside
+       * a section's object, from the \`@selected\` event
+       */
+      if (
+        currentItem.value &amp;&amp;
+        sectionConfigs.value[currentItem.value.name] &amp;&amp;
+        sectionConfigs.value[currentItem.value.name].onSelected
+      ) {
+        sectionConfigs.value[currentItem.value.name].onSelected(
+          currentItem.value,
+          searchInputOriginal.value
+        );
+      } else if (sectionConfigs.value[&quot;default&quot;].onSelected) {
+        sectionConfigs.value[&quot;default&quot;].onSelected(null, searchInputOriginal.value);
+      } else if (attrs.onSelected) {
+        attrs.onSelected(currentItem.value, currentIndex.value)
+      }
+      setChangeItem(null)
+    }\\" aria-autocomplete=\\"list\\" aria-activedescendant=\\"\\" aria-controls=\\"autosuggest-autosuggest__results\\"></div>
+  <div id=\\"autosuggest-autosuggest__results\\" class=\\"_object _key __v_isRef\\">
+    <!--v-if-->
+  </div>
+</div>"
+`;
+
+exports[`Autosuggest > can render suggestions 1`] = `
+"<div id=\\"autosuggest\\">
+  <div role=\\"combobox\\" aria-expanded=\\"false\\" aria-haspopup=\\"listbox\\" aria-owns=\\"autosuggest-autosuggest__results\\"><input type=\\"text\\" autocomplete=\\"off\\" class=\\"\\" id=\\"autosuggest__input\\" placeholder=\\"Type 'G'\\" input=\\"e => {
+      // Don't do anything native here, since we have inputHandler
+      return
+    }\\" selected=\\"() => {
+      /**
+       * Determine which onSelected to fire. This can be either from inside
+       * a section's object, from the \`@selected\` event
+       */
+      if (
+        currentItem.value &amp;&amp;
+        sectionConfigs.value[currentItem.value.name] &amp;&amp;
+        sectionConfigs.value[currentItem.value.name].onSelected
+      ) {
+        sectionConfigs.value[currentItem.value.name].onSelected(
+          currentItem.value,
+          searchInputOriginal.value
+        );
+      } else if (sectionConfigs.value[&quot;default&quot;].onSelected) {
+        sectionConfigs.value[&quot;default&quot;].onSelected(null, searchInputOriginal.value);
+      } else if (attrs.onSelected) {
+        attrs.onSelected(currentItem.value, currentIndex.value)
+      }
+      setChangeItem(null)
+    }\\" aria-autocomplete=\\"list\\" aria-activedescendant=\\"\\" aria-controls=\\"autosuggest-autosuggest__results\\"></div>
+  <div id=\\"autosuggest-autosuggest__results\\" class=\\"_object _key __v_isRef\\">
+    <!--v-if-->
+  </div>
+</div>"
+`;
+
+exports[`Autosuggest > can select from suggestions using keystroke 1`] = `
+"<div id=\\"autosuggest\\">
+  <div role=\\"combobox\\" aria-expanded=\\"false\\" aria-haspopup=\\"listbox\\" aria-owns=\\"autosuggest-autosuggest__results\\"><input type=\\"text\\" autocomplete=\\"off\\" class=\\"\\" id=\\"autosuggest__input\\" placeholder=\\"Type 'G'\\" input=\\"e => {
+      // Don't do anything native here, since we have inputHandler
+      return
+    }\\" selected=\\"() => {
+      /**
+       * Determine which onSelected to fire. This can be either from inside
+       * a section's object, from the \`@selected\` event
+       */
+      if (
+        currentItem.value &amp;&amp;
+        sectionConfigs.value[currentItem.value.name] &amp;&amp;
+        sectionConfigs.value[currentItem.value.name].onSelected
+      ) {
+        sectionConfigs.value[currentItem.value.name].onSelected(
+          currentItem.value,
+          searchInputOriginal.value
+        );
+      } else if (sectionConfigs.value[&quot;default&quot;].onSelected) {
+        sectionConfigs.value[&quot;default&quot;].onSelected(null, searchInputOriginal.value);
+      } else if (attrs.onSelected) {
+        attrs.onSelected(currentItem.value, currentIndex.value)
+      }
+      setChangeItem(null)
+    }\\" aria-autocomplete=\\"list\\" aria-activedescendant=\\"\\" aria-controls=\\"autosuggest-autosuggest__results\\"></div>
+  <div id=\\"autosuggest-autosuggest__results\\" class=\\"_object _key __v_isRef\\">
+    <!--v-if-->
+  </div>
+</div>"
+`;
+
+exports[`Autosuggest > can use escape key to exit 1`] = `
+"<div id=\\"autosuggest\\">
+  <div role=\\"combobox\\" aria-expanded=\\"false\\" aria-haspopup=\\"listbox\\" aria-owns=\\"autosuggest-autosuggest__results\\"><input type=\\"text\\" autocomplete=\\"off\\" class=\\"\\" id=\\"autosuggest__input\\" placeholder=\\"Type 'G'\\" input=\\"e => {
+      // Don't do anything native here, since we have inputHandler
+      return
+    }\\" selected=\\"() => {
+      /**
+       * Determine which onSelected to fire. This can be either from inside
+       * a section's object, from the \`@selected\` event
+       */
+      if (
+        currentItem.value &amp;&amp;
+        sectionConfigs.value[currentItem.value.name] &amp;&amp;
+        sectionConfigs.value[currentItem.value.name].onSelected
+      ) {
+        sectionConfigs.value[currentItem.value.name].onSelected(
+          currentItem.value,
+          searchInputOriginal.value
+        );
+      } else if (sectionConfigs.value[&quot;default&quot;].onSelected) {
+        sectionConfigs.value[&quot;default&quot;].onSelected(null, searchInputOriginal.value);
+      } else if (attrs.onSelected) {
+        attrs.onSelected(currentItem.value, currentIndex.value)
+      }
+      setChangeItem(null)
+    }\\" aria-autocomplete=\\"list\\" aria-activedescendant=\\"\\" aria-controls=\\"autosuggest-autosuggest__results\\"></div>
+  <div id=\\"autosuggest-autosuggest__results\\" class=\\"_object _key __v_isRef\\">
+    <!--v-if-->
+  </div>
+</div>"
+`;

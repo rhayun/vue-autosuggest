@@ -6,7 +6,7 @@ import Autosuggest from "../src/Autosuggest.vue";
 Element.prototype.scrollTo = () => {}; // https://github.com/vuejs/vue-test-utils/issues/319
 
 // Helper to call function x number of times
-const times = x => f => {
+const times = (x) => (f) => {
   if (x > 0) {
     f();
     times(x - 1)(f);
@@ -37,27 +37,27 @@ describe("Autosuggest", () => {
         "lego",
         "math life of fred",
         "multiplication",
-        "thinking tree"
-      ]
-    }
+        "thinking tree",
+      ],
+    },
   ];
 
   const defaultProps = {
     suggestions: filteredOptions,
     inputProps: {
       id,
-      placeholder: "Type 'G'"
+      placeholder: "Type 'G'",
     },
     sectionConfigs: {
       default: {
         limit: 5,
-        onSelected: () => {}
-      }
-    }
+        onSelected: () => {},
+      },
+    },
   };
 
   const defaultListeners = {
-    click: () => {}
+    click: () => {},
   };
 
   it("can mount", () => {
@@ -67,11 +67,11 @@ describe("Autosuggest", () => {
     props.suggestions = [filteredOptions[0]];
 
     const wrapper = shallowMount(Autosuggest, {
-      propsData: props
+      propsData: props,
     });
 
-    const input = wrapper.find('input[type="text"]')
-    input.setValue('q')
+    const input = wrapper.find('input[type="text"]');
+    input.setValue("q");
 
     const renderer = createRenderer();
     renderer.renderToString(wrapper.vm, (err, str) => {
@@ -86,7 +86,7 @@ describe("Autosuggest", () => {
 
     const wrapper = mount(Autosuggest, {
       propsData: props,
-      attachToDocument: true
+      attachToDocument: true,
     });
 
     const input = wrapper.find("input");
@@ -110,7 +110,7 @@ describe("Autosuggest", () => {
   it("can use escape key to exit", async () => {
     const wrapper = mount(Autosuggest, {
       propsData: defaultProps,
-      listeners: defaultListeners
+      listeners: defaultListeners,
     });
 
     const input = wrapper.find("input");
@@ -120,19 +120,19 @@ describe("Autosuggest", () => {
 
     // TODO: test these keys are actually returning early.
     input.trigger("keydown", {
-      keyCode: 16 // Shift
+      keyCode: 16, // Shift
     });
     input.trigger("keydown", {
-      keyCode: 9 // Tab
+      keyCode: 9, // Tab
     });
     input.trigger("keydown", {
-      keyCode: 18 // alt/option
+      keyCode: 18, // alt/option
     });
     input.trigger("keydown", {
-      keyCode: 91 // OS Key
+      keyCode: 91, // OS Key
     });
     input.trigger("keydown", {
-      keyCode: 93 // Right OS Key
+      keyCode: 93, // Right OS Key
     });
 
     input.trigger("keydown.down");
@@ -156,7 +156,7 @@ describe("Autosuggest", () => {
   it("can select from suggestions using keystroke", async () => {
     const wrapper = mount(Autosuggest, {
       propsData: defaultProps,
-      attachToDocument: true
+      attachToDocument: true,
     });
 
     const input = wrapper.find("input");
@@ -187,36 +187,27 @@ describe("Autosuggest", () => {
   it("can interact with results of specific instance when multiple instances exist", async () => {
     const multipleAutosuggest = {
       components: {
-        Autosuggest
+        Autosuggest,
       },
-      data () {
+      data() {
         return {
           autosuggestProps: defaultProps,
-          automatischsuchen: true
-        }
+          automatischsuchen: true,
+        };
       },
       render(h) {
-        return h(
-          "div",
-          [
-            h(
-              Autosuggest,
-              {
-                props: this.autosuggestProps
-              }
-            ),
-            h(
-              Autosuggest,
-              {
-                props: this.autosuggestProps
-              }
-            )
-          ]
-        );
-      }
-    }
+        return h("div", [
+          h(Autosuggest, {
+            props: this.autosuggestProps,
+          }),
+          h(Autosuggest, {
+            props: this.autosuggestProps,
+          }),
+        ]);
+      },
+    };
     const wrapper = mount(multipleAutosuggest, {
-      attachToDocument: true
+      attachToDocument: true,
     });
 
     const autosuggestInstances = wrapper.findAll(Autosuggest);
@@ -238,7 +229,9 @@ describe("Autosuggest", () => {
 
     expect(autosuggest1.findAll("li.autosuggest__results-item--highlighted").length).toBe(0);
     expect(autosuggest2.findAll("li.autosuggest__results-item--highlighted").length).toBe(1);
-    expect(autosuggest2.findAll("li").at(1).classes()).toContain("autosuggest__results-item--highlighted");
+    expect(autosuggest2.findAll("li").at(1).classes()).toContain(
+      "autosuggest__results-item--highlighted"
+    );
 
     input2.trigger("keydown.enter");
 
@@ -252,7 +245,7 @@ describe("Autosuggest", () => {
     const wrapper = mount(Autosuggest, {
       propsData: props,
       listeners: defaultListeners,
-      attachToDocument: true
+      attachToDocument: true,
     });
 
     const input = wrapper.find("input");
@@ -280,13 +273,13 @@ describe("Autosuggest", () => {
       default: {
         label: "Suggestions",
         limit: 5,
-        onSelected: () => {}
-      }
+        onSelected: () => {},
+      },
     };
     const wrapper = mount(Autosuggest, {
       propsData: props,
       listeners: defaultListeners,
-      attachToDocument: true
+      attachToDocument: true,
     });
 
     const input = wrapper.find("input");
@@ -313,10 +306,10 @@ describe("Autosuggest", () => {
         default: {
           label: "Suggestions",
           limit: 5,
-          onSelected: () => {}
-        }
-      }
-    }
+          onSelected: () => {},
+        },
+      },
+    };
     const wrapper = mount(Autosuggest, { propsData });
 
     const combobox = wrapper.find("[role='combobox']");
@@ -330,10 +323,10 @@ describe("Autosuggest", () => {
     expect(input.attributes()["aria-controls"]).toBe("autosuggest-autosuggest__results");
 
     // aria owns needs to be an "id", #191
-    let results = wrapper.find(`#${combobox.attributes()["aria-owns"]}`)
-    expect(results.exists()).toBeTruthy()
-    results = wrapper.find(`#${input.attributes()["aria-controls"]}`)
-    expect(results.exists()).toBeTruthy()
+    let results = wrapper.find(`#${combobox.attributes()["aria-owns"]}`);
+    expect(results.exists()).toBeTruthy();
+    results = wrapper.find(`#${input.attributes()["aria-controls"]}`);
+    expect(results.exists()).toBeTruthy();
 
     // TODO: Make sure aria-completeness is actually 2legit2quit.
 
@@ -343,9 +336,9 @@ describe("Autosuggest", () => {
     expect(combobox.attributes()["aria-expanded"]).toBe("true");
 
     // make sure aria-labeledby references the section config label, and that it's an "id"
-    const ul = wrapper.find('ul')
-    expect(ul.attributes()['aria-labelledby']).toBe('autosuggest-Suggestions')
-    expect(ul.find(`#${ul.attributes()['aria-labelledby']}`).exists).toBeTruthy()
+    const ul = wrapper.find("ul");
+    expect(ul.attributes()["aria-labelledby"]).toBe("autosuggest-Suggestions");
+    expect(ul.find(`#${ul.attributes()["aria-labelledby"]}`).exists).toBeTruthy();
 
     const mouseDownTimes = 3;
     times(mouseDownTimes)(() => {
@@ -381,7 +374,7 @@ describe("Autosuggest", () => {
 
     const wrapper = mount(Autosuggest, {
       propsData: props,
-      attachToDocument: true
+      attachToDocument: true,
     });
 
     const input = wrapper.find("input");
@@ -416,17 +409,17 @@ describe("Autosuggest", () => {
             id: 1,
             name: "Frodo",
             avatar:
-              "https://upload.wikimedia.org/wikipedia/en/4/4e/Elijah_Wood_as_Frodo_Baggins.png"
-          }
-        ]
-      }
+              "https://upload.wikimedia.org/wikipedia/en/4/4e/Elijah_Wood_as_Frodo_Baggins.png",
+          },
+        ],
+      },
     ];
 
     props.onSelected = () => {};
 
     const wrapper = mount(Autosuggest, {
       propsData: props,
-      attachToDocument: true
+      attachToDocument: true,
     });
 
     const input = wrapper.find("input");
@@ -454,7 +447,7 @@ describe("Autosuggest", () => {
     props.inputProps = { ...defaultProps.inputProps, name: "my-input" };
 
     const wrapper = mount(Autosuggest, {
-      propsData: props
+      propsData: props,
     });
 
     const input = wrapper.find("input");
@@ -464,7 +457,7 @@ describe("Autosuggest", () => {
   it("search input prop type handles string and integers only", async () => {
     let props = {
       ...defaultProps,
-      inputProps: {...defaultProps.inputProps}
+      inputProps: { ...defaultProps.inputProps },
     };
 
     const mockConsole = jest.fn();
@@ -474,7 +467,7 @@ describe("Autosuggest", () => {
     props.inputProps.onBlur = blurred;
 
     const wrapper = mount(Autosuggest, {
-      propsData: props
+      propsData: props,
     });
 
     const input = wrapper.find("input");
@@ -496,7 +489,11 @@ describe("Autosuggest", () => {
 
     // Functions
     input.trigger("click");
-    wrapper.setData({ searchInput: () => { /* BAD */ } });
+    wrapper.setData({
+      searchInput: () => {
+        /* BAD */
+      },
+    });
     await wrapper.vm.$nextTick(() => {});
     input.trigger("blur");
 
@@ -508,24 +505,24 @@ describe("Autosuggest", () => {
     const wrapper = mount(Autosuggest, {
       propsData: defaultProps,
       slots: {
-        'before-suggestions': '<div class="header-dude"></div>',
-        'after-suggestions': '<div id="footer-dude"><span>1</span><span>2</span></div>'
+        "before-suggestions": '<div class="header-dude"></div>',
+        "after-suggestions": '<div id="footer-dude"><span>1</span><span>2</span></div>',
       },
       scopedSlots: {
         default: `
           <h1 slot-scope="{suggestion}">{{ suggestion.item }}</h1>
-        `
+        `,
       },
-      attachToDocument: true
+      attachToDocument: true,
     });
 
     const input = wrapper.find("input");
     input.trigger("click");
     input.setValue("G");
 
-    expect(wrapper.findAll('.header-dude').length).toEqual(1);
-    expect(wrapper.findAll('#footer-dude span').length).toEqual(2);
-    expect(wrapper.findAll('h1').length).toEqual(5);
+    expect(wrapper.findAll(".header-dude").length).toEqual(1);
+    expect(wrapper.findAll("#footer-dude span").length).toEqual(2);
+    expect(wrapper.findAll("h1").length).toEqual(5);
 
     await wrapper.vm.$nextTick(() => {});
 
@@ -540,28 +537,28 @@ describe("Autosuggest", () => {
 
   it("can render section slots", async () => {
     const props = { ...defaultProps };
-    props.suggestions.push({ name: 'dogs', data: ['spike', 'bud', 'rover']})
-    props.suggestions.push({ name: 'cats', data: ['sassy', 'tuesday', 'church']})
-    props.suggestions.push({ name: 'zeu', data: ['elephant', 'lion']})
-    props.suggestions.push({ name: 'Uhh', data: ['something', 'something2']})
+    props.suggestions.push({ name: "dogs", data: ["spike", "bud", "rover"] });
+    props.suggestions.push({ name: "cats", data: ["sassy", "tuesday", "church"] });
+    props.suggestions.push({ name: "zeu", data: ["elephant", "lion"] });
+    props.suggestions.push({ name: "Uhh", data: ["something", "something2"] });
 
     props.sectionConfigs = {
       default: {
         label: "Suggestions",
         limit: 5,
-        onSelected: () => {}
+        onSelected: () => {},
       },
       Uhh: {
-        label: "uhh"
+        label: "uhh",
       },
     };
     const wrapper = mount(Autosuggest, {
       propsData: props,
       attachToDocument: true,
       scopedSlots: {
-        'before-section-dogs': `<li :class="props.className">The Dogs</li>`,
-        'before-section-cats': `<li>Moar Cats is good</li>`,
-        'before-section-zeu': `<li>zoo animals?</li>`
+        "before-section-dogs": `<li :class="props.className">The Dogs</li>`,
+        "before-section-cats": `<li>Moar Cats is good</li>`,
+        "before-section-zeu": `<li>zoo animals?</li>`,
       },
     });
 
@@ -587,21 +584,21 @@ describe("Autosuggest", () => {
       propsData: {
         ...defaultProps,
         class: "containerz",
-        'component-attr-id-autosuggest': "automatischsuchen",
-        'component-attr-class-autosuggest-results-container': 'resultz-containerz',
-        'component-attr-class-autosuggest-results': 'resultz'
+        "component-attr-id-autosuggest": "automatischsuchen",
+        "component-attr-class-autosuggest-results-container": "resultz-containerz",
+        "component-attr-class-autosuggest-results": "resultz",
       },
-      attachToDocument: true
+      attachToDocument: true,
     });
 
     const input = wrapper.find("input");
     input.trigger("click");
     input.setValue("G");
 
-    expect(wrapper.find('#automatischsuchen').is('div')).toBe(true);
-    expect(wrapper.find('.containerz').is('div')).toBe(true);
-    expect(wrapper.find('.resultz-containerz').is('div')).toBe(true);
-    expect(wrapper.find(`#${defaultProps.inputProps.id}`).is('input')).toBe(true);
+    expect(wrapper.find("#automatischsuchen").is("div")).toBe(true);
+    expect(wrapper.find(".containerz").is("div")).toBe(true);
+    expect(wrapper.find(".resultz-containerz").is("div")).toBe(true);
+    expect(wrapper.find(`#${defaultProps.inputProps.id}`).is("input")).toBe(true);
 
     const renderer = createRenderer();
     renderer.renderToString(wrapper.vm, (err, str) => {
@@ -617,16 +614,16 @@ describe("Autosuggest", () => {
       propsData: {
         ...defaultProps,
         class: "containerz",
-        'component-attr-prefix': 'v',
-        'component-attr-id-autosuggest': "the-whole-thing",
-        'component-attr-class-autosuggest-results-container': 'the-results-container',
-        'component-attr-class-autosuggest-results': 'the-results',
+        "component-attr-prefix": "v",
+        "component-attr-id-autosuggest": "the-whole-thing",
+        "component-attr-class-autosuggest-results-container": "the-results-container",
+        "component-attr-class-autosuggest-results": "the-results",
         inputProps: {
           ...defaultProps.inputProps,
-          id: 'the-input-thing',
-        }
+          id: "the-input-thing",
+        },
       },
-      attachToDocument: true
+      attachToDocument: true,
     });
 
     const input = wrapper.find("input");
@@ -634,14 +631,14 @@ describe("Autosuggest", () => {
     input.setValue("G");
 
     // Make sure the prefixes still allow for custom css/id's
-    expect(wrapper.find('#the-whole-thing').is('div')).toBe(true);
-    expect(wrapper.find('#the-input-thing').is('input')).toBe(true);
-    expect(wrapper.find('.the-results-container').is('div')).toBe(true);
-    expect(wrapper.find('.the-results').is('div')).toBe(true);
+    expect(wrapper.find("#the-whole-thing").is("div")).toBe(true);
+    expect(wrapper.find("#the-input-thing").is("input")).toBe(true);
+    expect(wrapper.find(".the-results-container").is("div")).toBe(true);
+    expect(wrapper.find(".the-results").is("div")).toBe(true);
 
     // Prefix checks
-    expect(wrapper.find('#v__results-item--0').is('li')).toBeTruthy()
-    expect(wrapper.find('.v__results-item').is('li')).toBeTruthy()
+    expect(wrapper.find("#v__results-item--0").is("li")).toBeTruthy();
+    expect(wrapper.find(".v__results-item").is("li")).toBeTruthy();
 
     const renderer = createRenderer();
     renderer.renderToString(wrapper.vm, (err, str) => {
@@ -655,7 +652,7 @@ describe("Autosuggest", () => {
   it("@click and @selected listener events works as expected", async () => {
     let props = Object.assign({}, defaultProps);
 
-    delete props['sectionConfigs']
+    delete props["sectionConfigs"];
 
     const mockFn = jest.fn();
     const mockConsole = jest.fn();
@@ -665,14 +662,14 @@ describe("Autosuggest", () => {
     const wrapper = mount(Autosuggest, {
       propsData: props,
       listeners: {
-        click: e => {
+        click: (e) => {
           mockFn(e);
         },
-        selected: e => {
+        selected: (e) => {
           mockFn(e);
-        }
+        },
       },
-      attachToDocument: true
+      attachToDocument: true,
     });
 
     await wrapper.vm.$nextTick(() => {});
@@ -700,42 +697,42 @@ describe("Autosuggest", () => {
   });
 
   it("tears down event listeners", async () => {
-    let props = {...defaultProps};
+    let props = { ...defaultProps };
 
-    delete props['sectionConfigs']
+    delete props["sectionConfigs"];
 
     const AEL = jest.fn();
     const REL = jest.fn();
 
-    window.document.addEventListener = AEL
-    window.document.removeEventListener = REL
+    window.document.addEventListener = AEL;
+    window.document.removeEventListener = REL;
 
     const wrapper = mount(Autosuggest, {
       propsData: props,
-      attachToDocument: true
+      attachToDocument: true,
     });
 
-    wrapper.destroy()
-    expect(AEL).toHaveBeenCalledTimes(2)
-    expect(REL).toHaveBeenCalledTimes(2)
+    wrapper.destroy();
+    expect(AEL).toHaveBeenCalledTimes(2);
+    expect(REL).toHaveBeenCalledTimes(2);
   });
 
   it("can modify input type attribute", async () => {
     const props = Object.assign({}, defaultProps);
     props.inputProps = {
       ...defaultProps.inputProps,
-      type: 'search'
+      type: "search",
     };
 
     props.suggestions = [filteredOptions[0]];
 
     const wrapper = shallowMount(Autosuggest, {
-      propsData: props
+      propsData: props,
     });
 
-    const input = wrapper.find('input[type="search"]')
-    expect(input.is('input')).toBe(true)
-    expect(input.attributes("type", 'search')).toBeTruthy();
+    const input = wrapper.find('input[type="search"]');
+    expect(input.is("input")).toBe(true);
+    expect(input.attributes("type", "search")).toBeTruthy();
 
     const renderer = createRenderer();
     renderer.renderToString(wrapper.vm, (err, str) => {
@@ -755,24 +752,24 @@ describe("Autosuggest", () => {
       components: { Autosuggest },
       data: () => {
         return {
-          'ph': 'Type here...'
-        }
-      }
-    }
+          ph: "Type here...",
+        };
+      },
+    };
 
     const wrapper = mount(Parent);
-    const input = wrapper.find('input[type="text"]')
-    expect(input.attributes("placeholder")).toBe('Type here...');
+    const input = wrapper.find('input[type="text"]');
+    expect(input.attributes("placeholder")).toBe("Type here...");
 
-    wrapper.setData({ ph: 'Please type here...' })
-    expect(input.attributes("placeholder")).toBe('Please type here...')
+    wrapper.setData({ ph: "Please type here..." });
+    expect(input.attributes("placeholder")).toBe("Please type here...");
   });
 
   it("can handle null data", async () => {
-    const props = {...defaultProps, suggestions: [{ data: null }]};
+    const props = { ...defaultProps, suggestions: [{ data: null }] };
 
     const wrapper = shallowMount(Autosuggest, {
-      propsData: props
+      propsData: props,
     });
 
     const renderer = createRenderer();
@@ -788,7 +785,7 @@ describe("Autosuggest", () => {
 
     const wrapper = mount(Autosuggest, {
       propsData: props,
-      attachToDocument: true
+      attachToDocument: true,
     });
 
     const input = wrapper.find("input");
@@ -800,11 +797,11 @@ describe("Autosuggest", () => {
     input.trigger("keydown.enter");
     input.trigger("keydown.down");
 
-    expect(wrapper.findAll("li.autosuggest__results-item--highlighted")).toHaveLength(1)
+    expect(wrapper.findAll("li.autosuggest__results-item--highlighted")).toHaveLength(1);
 
-    const item = wrapper.find("li.autosuggest__results-item--highlighted")
-    expect(item.attributes('data-suggestion-index')).toBe('0')
-    expect(input.attributes('aria-activedescendant')).toBe('autosuggest__results-item--0')
+    const item = wrapper.find("li.autosuggest__results-item--highlighted");
+    expect(item.attributes("data-suggestion-index")).toBe("0");
+    expect(input.attributes("aria-activedescendant")).toBe("autosuggest__results-item--0");
 
     const renderer = createRenderer();
     renderer.renderToString(wrapper.vm, (err, str) => {
@@ -817,13 +814,13 @@ describe("Autosuggest", () => {
 
   it("can display ul and li classNames", async () => {
     const props = { ...defaultProps };
-    props.sectionConfigs.default.liClass = { 'hello-li': true }
-    props.sectionConfigs.default.ulClass = { 'hello-ul': true }
+    props.sectionConfigs.default.liClass = { "hello-li": true };
+    props.sectionConfigs.default.ulClass = { "hello-ul": true };
 
     const wrapper = mount(Autosuggest, {
       propsData: props,
       listeners: defaultListeners,
-      attachToDocument: true
+      attachToDocument: true,
     });
 
     const input = wrapper.find("input");
@@ -832,11 +829,11 @@ describe("Autosuggest", () => {
     input.trigger("click");
     input.setValue("G");
 
-    const ul = wrapper.find("ul")
-    const li = ul.find("li:nth-child(1)")
+    const ul = wrapper.find("ul");
+    const li = ul.find("li:nth-child(1)");
 
-    expect(ul.classes()).toContain('hello-ul');
-    expect(li.classes()).toContain('hello-li');
+    expect(ul.classes()).toContain("hello-ul");
+    expect(li.classes()).toContain("hello-li");
 
     const renderer = createRenderer();
     renderer.renderToString(wrapper.vm, (err, str) => {
@@ -859,11 +856,11 @@ describe("Autosuggest", () => {
     input.setValue("G");
     input.trigger("keydown.down");
 
-    await wrapper.vm.$nextTick(() => {})
+    await wrapper.vm.$nextTick(() => {});
     expect(wrapper.emitted().opened).toBeTruthy();
 
     input.trigger("keydown.esc");
-    await wrapper.vm.$nextTick(() => {})
+    await wrapper.vm.$nextTick(() => {});
     expect(wrapper.emitted().closed).toBeTruthy();
   });
 
@@ -880,27 +877,27 @@ describe("Autosuggest", () => {
     input.trigger("keydown.down");
     input.trigger("keydown.down");
 
-    await wrapper.vm.$nextTick(() => {})
-    expect(wrapper.emitted()['item-changed']).toHaveLength(2);
-    const itemChanged1 = wrapper.emitted()['item-changed'][0]
-    const itemChanged2 = wrapper.emitted()['item-changed'][1]
+    await wrapper.vm.$nextTick(() => {});
+    expect(wrapper.emitted()["item-changed"]).toHaveLength(2);
+    const itemChanged1 = wrapper.emitted()["item-changed"][0];
+    const itemChanged2 = wrapper.emitted()["item-changed"][1];
 
     // Emits with item and index
-    expect(itemChanged1[0].item).toBe('clifford kits');
+    expect(itemChanged1[0].item).toBe("clifford kits");
     expect(itemChanged1[1]).toBe(0);
-    expect(itemChanged2[0].item).toBe('friendly chemistry');
+    expect(itemChanged2[0].item).toBe("friendly chemistry");
     expect(itemChanged2[1]).toBe(1);
 
     input.trigger("keydown.up");
-    await wrapper.vm.$nextTick(() => {})
+    await wrapper.vm.$nextTick(() => {});
     input.trigger("keydown.up");
-    await wrapper.vm.$nextTick(() => {})
-    await wrapper.vm.$nextTick(() => {})
+    await wrapper.vm.$nextTick(() => {});
+    await wrapper.vm.$nextTick(() => {});
 
     // Ensure empty item-changed is emitted when user keys back
     // to the input #177
-    expect(wrapper.emitted()['item-changed']).toHaveLength(4)
-    const itemChangedEmpty = wrapper.emitted()['item-changed'][3]
+    expect(wrapper.emitted()["item-changed"]).toHaveLength(4);
+    const itemChangedEmpty = wrapper.emitted()["item-changed"][3];
     expect(itemChangedEmpty[0]).toBeNull();
     expect(itemChangedEmpty[1]).toBeNull();
   });
@@ -916,18 +913,18 @@ describe("Autosuggest", () => {
     const input = wrapper.find("input");
     input.setValue("G");
     input.trigger("keydown.down");
-    await wrapper.vm.$nextTick(() => {})
-    expect(wrapper.vm.currentIndex).toBe(0)
+    await wrapper.vm.$nextTick(() => {});
+    expect(wrapper.vm.currentIndex).toBe(0);
     input.trigger("keydown.up");
-    expect(wrapper.vm.currentIndex).toBe(-1)
+    expect(wrapper.vm.currentIndex).toBe(-1);
 
     // Go into the upside down, but make sure to come back unscathed
-    await wrapper.vm.$nextTick(() => {})
+    await wrapper.vm.$nextTick(() => {});
     input.trigger("keydown.up");
-    await wrapper.vm.$nextTick(() => {})
+    await wrapper.vm.$nextTick(() => {});
     input.trigger("keydown.up");
-    await wrapper.vm.$nextTick(() => {})
+    await wrapper.vm.$nextTick(() => {});
 
-    expect(wrapper.vm.currentIndex).toBe(-1)
+    expect(wrapper.vm.currentIndex).toBe(-1);
   });
 });
