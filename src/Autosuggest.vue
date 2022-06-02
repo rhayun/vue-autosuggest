@@ -377,7 +377,7 @@ const _componentAttrClassAutosuggestResults = computed (() => {
 //
 // WATCH
 //
-watch(modelValue, (newValue) => {
+watch(modelValue.value, (newValue) => {
   internalValue.value = newValue
 });
 
