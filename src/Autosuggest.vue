@@ -134,7 +134,7 @@ const defaultSectionConfig = {
 // Props
 //
 const props = defineProps({
-  value: {
+  modelValue: {
     type: String,
     default: null
   },
@@ -211,7 +211,7 @@ const props = defineProps({
 })
 
 const {
-  value,
+  modelValue,
   suggestions,
   componentAttrIdAutosuggest,
   componentAttrPrefix,
@@ -377,7 +377,7 @@ const _componentAttrClassAutosuggestResults = computed (() => {
 //
 // WATCH
 //
-watch(value, (newValue) => {
+watch(modelValue, (newValue) => {
   internalValue.value = newValue
 });
 
@@ -704,6 +704,7 @@ onBeforeMount(() => {
 })
 
 onMounted(() => {
+  internalValue.value = modelValue.value
   document.addEventListener("mouseup", onDocumentMouseUp);
   document.addEventListener("mousedown", onDocumentMouseDown);
 })
